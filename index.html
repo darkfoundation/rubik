@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en"><head><title>Rubik's Cube</title>
+<script>
+function draw_cube() {
+    let t=new Date().valueOf(); let turns=document.getElementById("turns").value;
+    let params="turns="+encodeURIComponent(turns)+"&t="+t;
+	document.getElementById("rubik").src="rubik.php?"+params;
+}
+</script></head>
+<body onload="draw_cube();"><div style="width: 100%; text-align: center; font-family: verdana,sans-serif; font-size: 12px; white-space: nowrap">
+<input id="turns" type="text" size="50">
+<input type="button" value="submit turns" onclick=draw_cube();><br/>
+<img id="rubik" src="black.png" width="745" height="360" alt="cube display">
+</div></body></html>

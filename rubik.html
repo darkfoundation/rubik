@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en"><head><title>Rubik's Cube</title>
+<script>
+function init_cube() {
+    let up_arr=["white", "white", "white", "white", "white", "white", "white", "white", "white"];
+    let down_arr=["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"];
+    let left_arr=["red", "red", "red", "red", "red", "red", "red", "red", "red"];
+    let right_arr=["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange"];
+    let front_arr=["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"];
+    let back_arr=["green", "green", "green", "green", "green", "green", "green", "green", "green"];
+    cube_arr=[up_arr, down_arr, left_arr, right_arr, front_arr, back_arr];
+    draw_cube(cube_arr); return cube_arr;
+}
+
+function draw_ud(ctx, target_arr, x, y, n) {
+    for (let k=0; k<3; k++) {
+        for (let j=0; j<3; j++) {
+            let x_off=x+j*55+k*55; let y_off=y-j*22+k*22;
+            ctx.fillStyle=target_arr[j+3*k]; 
+            ctx.beginPath(); ctx.moveTo(x_off, y_off); ctx.lineTo(x_off+50, y_off-20);
+            ctx.lineTo(x_off+100, y_off); ctx.lineTo(x_off+50, y_off+20); ctx.fill();
+        }
+    }
+    ctx.fillStyle="black"; ctx.beginPath(); ctx.arc(x+160, y, 12, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle="white"; ctx.font="12px sans-serif"; ctx.fillText(n, x+156, y+5);
+}
+
+function draw_lb(ctx, target_arr, x, y, n) {
+    for (let k=0; k<3; k++) {
+        for (let j=0; j<3; j++) {
+            let x_off=x+j*55; let y_off=y+j*22+k*69;
+            ctx.fillStyle=target_arr[j+3*k]; 
+            ctx.beginPath(); ctx.moveTo(x_off, y_off); ctx.lineTo(x_off+50, y_off+20);
+            ctx.lineTo(x_off+50, y_off+85); ctx.lineTo(x_off, y_off+65); ctx.fill();
+        }
+    }
+    ctx.fillStyle="black"; ctx.beginPath(); ctx.arc(x+79, y+133, 12, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle="white"; ctx.font="12px sans-serif"; ctx.fillText(n, x+75, y+137);
+}
+
+function draw_fr(ctx, target_arr, x, y, n) {
+    for (let k=0; k<3; k++) {
+        for (let j=0; j<3; j++) {
+            let x_off=x+j*55; let y_off=y-j*22+k*69;
+            ctx.fillStyle=target_arr[j+3*k]; 
+            ctx.beginPath(); ctx.moveTo(x_off, y_off); ctx.lineTo(x_off+50, y_off-20);
+            ctx.lineTo(x_off+50, y_off+45); ctx.lineTo(x_off, y_off+65); ctx.fill();
+        }
+    }
+    ctx.fillStyle="black"; ctx.beginPath(); ctx.arc(x+81, y+69, 12, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle="white"; ctx.font="12px sans-serif"; ctx.fillText(n, x+77, y+73);
+}
+
+function draw_cube(cube_arr) {
+    let up_arr=cube_arr[0]; let down_arr=cube_arr[1]; let left_arr=cube_arr[2];
+    let right_arr=cube_arr[3]; let front_arr=cube_arr[4]; let back_arr=cube_arr[5];
+    let c=document.getElementById("rubik"); let ctx=c.getContext("2d");
+    ctx.fillStyle="black"; ctx.fillRect(0, 0, 745, 360);
+    draw_ud(ctx, up_arr, 25, 75, "U"); draw_lb(ctx, left_arr, 23, 78, "L"); draw_fr(ctx, front_arr, 187, 142, "F");
+    draw_ud(ctx, down_arr, 398, 281, "D"); draw_fr(ctx, right_arr, 396, 75, "R"); draw_lb(ctx, back_arr, 560, 11, "B");
+}
+
+function u(cube_arr) {
+    let up_arr=cube_arr[0]; let down_arr=cube_arr[1]; let left_arr=cube_arr[2];
+    let right_arr=cube_arr[3]; let front_arr=cube_arr[4]; let back_arr=cube_arr[5];
+    let temp=up_arr[0]; up_arr[0]=up_arr[6]; up_arr[6]=up_arr[8]; up_arr[8]=up_arr[2]; up_arr[2]=temp;
+    temp=up_arr[1]; up_arr[1]=up_arr[3]; up_arr[3]=up_arr[7]; up_arr[7]=up_arr[5]; up_arr[5]=temp;
+    temp=left_arr[0]; left_arr[0]=front_arr[0]; front_arr[0]=right_arr[0]; right_arr[0]=back_arr[0]; back_arr[0]=temp;
+    temp=left_arr[1]; left_arr[1]=front_arr[1]; front_arr[1]=right_arr[1]; right_arr[1]=back_arr[1]; back_arr[1]=temp;
+    temp=left_arr[2]; left_arr[2]=front_arr[2]; front_arr[2]=right_arr[2]; right_arr[2]=back_arr[2]; back_arr[2]=temp;
+    cube_arr=[up_arr, down_arr, left_arr, right_arr, front_arr, back_arr];
+    return cube_arr;
+}
+
+function d(cube_arr) {
+    let up_arr=cube_arr[0]; let down_arr=cube_arr[1]; let left_arr=cube_arr[2];
+    let right_arr=cube_arr[3]; let front_arr=cube_arr[4]; let back_arr=cube_arr[5];
+    let temp=down_arr[0]; down_arr[0]=down_arr[6]; down_arr[6]=down_arr[8]; down_arr[8]=down_arr[2]; down_arr[2]=temp;
+    temp=down_arr[1]; down_arr[1]=down_arr[3]; down_arr[3]=down_arr[7]; down_arr[7]=down_arr[5]; down_arr[5]=temp;
+    temp=front_arr[6]; front_arr[6]=left_arr[6]; left_arr[6]=back_arr[6]; back_arr[6]=right_arr[6]; right_arr[6]=temp;
+    temp=front_arr[8]; front_arr[8]=left_arr[8]; left_arr[8]=back_arr[8]; back_arr[8]=right_arr[8]; right_arr[8]=temp;
+    temp=front_arr[7]; front_arr[7]=left_arr[7]; left_arr[7]=back_arr[7]; back_arr[7]=right_arr[7]; right_arr[7]=temp;
+    cube_arr=[up_arr, down_arr, left_arr, right_arr, front_arr, back_arr];
+    return cube_arr;
+}
+
+function l(cube_arr) {
+    let up_arr=cube_arr[0]; let down_arr=cube_arr[1]; let left_arr=cube_arr[2];
+    let right_arr=cube_arr[3]; let front_arr=cube_arr[4]; let back_arr=cube_arr[5];
+    let temp=left_arr[0]; left_arr[0]=left_arr[6]; left_arr[6]=left_arr[8]; left_arr[8]=left_arr[2]; left_arr[2]=temp;
+    temp=left_arr[1]; left_arr[1]=left_arr[3]; left_arr[3]=left_arr[7]; left_arr[7]=left_arr[5]; left_arr[5]=temp;
+    temp=front_arr[0]; front_arr[0]=up_arr[0]; up_arr[0]=back_arr[8]; back_arr[8]=down_arr[6]; down_arr[6]=temp;
+    temp=front_arr[3]; front_arr[3]=up_arr[3]; up_arr[3]=back_arr[5]; back_arr[5]=down_arr[7]; down_arr[7]=temp;
+    temp=front_arr[6]; front_arr[6]=up_arr[6]; up_arr[6]=back_arr[2]; back_arr[2]=down_arr[8]; down_arr[8]=temp;
+    cube_arr=[up_arr, down_arr, left_arr, right_arr, front_arr, back_arr];
+    return cube_arr;
+}
+
+function r(cube_arr) {
+    let up_arr=cube_arr[0]; let down_arr=cube_arr[1]; let left_arr=cube_arr[2];
+    let right_arr=cube_arr[3]; let front_arr=cube_arr[4]; let back_arr=cube_arr[5];
+    let temp=right_arr[0]; right_arr[0]=right_arr[6]; right_arr[6]=right_arr[8]; right_arr[8]=right_arr[2]; right_arr[2]=temp;
+    temp=right_arr[1]; right_arr[1]=right_arr[3]; right_arr[3]=right_arr[7]; right_arr[7]=right_arr[5]; right_arr[5]=temp;
+    temp=front_arr[8]; front_arr[8]=down_arr[2]; down_arr[2]=back_arr[0]; back_arr[0]=up_arr[8]; up_arr[8]=temp;
+    temp=front_arr[5]; front_arr[5]=down_arr[1]; down_arr[1]=back_arr[3]; back_arr[3]=up_arr[5]; up_arr[5]=temp;
+    temp=front_arr[2]; front_arr[2]=down_arr[0]; down_arr[0]=back_arr[6]; back_arr[6]=up_arr[2]; up_arr[2]=temp;
+    cube_arr=[up_arr, down_arr, left_arr, right_arr, front_arr, back_arr];
+    return cube_arr;
+}
+
+function f(cube_arr) {
+    let up_arr=cube_arr[0]; let down_arr=cube_arr[1]; let left_arr=cube_arr[2];
+    let right_arr=cube_arr[3]; let front_arr=cube_arr[4]; let back_arr=cube_arr[5];
+    let temp=front_arr[0]; front_arr[0]=front_arr[6]; front_arr[6]=front_arr[8]; front_arr[8]=front_arr[2]; front_arr[2]=temp;
+    temp=front_arr[1]; front_arr[1]=front_arr[3]; front_arr[3]=front_arr[7]; front_arr[7]=front_arr[5]; front_arr[5]=temp;
+    temp=up_arr[8]; up_arr[8]=left_arr[2]; left_arr[2]=down_arr[6]; down_arr[6]=right_arr[6]; right_arr[6]=temp;
+    temp=up_arr[7]; up_arr[7]=left_arr[5]; left_arr[5]=down_arr[3]; down_arr[3]=right_arr[3]; right_arr[3]=temp;
+    temp=up_arr[6]; up_arr[6]=left_arr[8]; left_arr[8]=down_arr[0]; down_arr[0]=right_arr[0]; right_arr[0]=temp;
+    cube_arr=[up_arr, down_arr, left_arr, right_arr, front_arr, back_arr];
+    return cube_arr;
+}
+
+function b(cube_arr) {
+    let up_arr=cube_arr[0]; let down_arr=cube_arr[1]; let left_arr=cube_arr[2];
+    let right_arr=cube_arr[3]; let front_arr=cube_arr[4]; let back_arr=cube_arr[5];
+    let  temp=back_arr[0]; back_arr[0]=back_arr[6]; back_arr[6]=back_arr[8]; back_arr[8]=back_arr[2]; back_arr[2]=temp;
+    temp=back_arr[1]; back_arr[1]=back_arr[3]; back_arr[3]=back_arr[7]; back_arr[7]=back_arr[5]; back_arr[5]=temp;
+    temp=up_arr[0];up_arr[0]=right_arr[2]; right_arr[2]=down_arr[2]; down_arr[2]=left_arr[6]; left_arr[6]=temp;
+    temp=up_arr[1];up_arr[1]=right_arr[5]; right_arr[5]=down_arr[5]; down_arr[5]=left_arr[3]; left_arr[3]=temp;
+    temp=up_arr[2];up_arr[2]=right_arr[8]; right_arr[8]=down_arr[8]; down_arr[8]=left_arr[0]; left_arr[0]=temp;
+    cube_arr=[up_arr, down_arr, left_arr, right_arr, front_arr, back_arr];
+    return cube_arr;
+}
+
+function eval_turn(cube_arr) {
+    let turns=document.getElementById("turns").value.toLowerCase();
+    if (turns==null) { draw_cube(cube_arr); return cube_arr; }
+    let filt_turns=turns.match(/[udlrfb2\-]/g);
+    if (filt_turns==null) { draw_cube(cube_arr); return cube_arr; }
+    let list=[]; let prev='';
+    for (let i=0; i<filt_turns.length; i++) {
+        let t=filt_turns[i]; let tick=String.fromCharCode(180);
+        if (t!=='2' && t!=='-') {
+            list.push(t); prev=t;
+        } else {
+            if (prev!=='') {
+                if (t==='2') { list.push(prev); prev=''; }
+                if (t==='-') { list.push(prev); list.push(prev); prev=''; }
+            }
+        }
+    }
+    for (let i=0; i<list.length; i++) {
+        switch (list[i]) {
+            case 'u':
+                u(cube_arr);
+            break;
+            case 'd':
+                d(cube_arr);
+            break;
+            case 'l':
+                l(cube_arr);
+            break;
+            case 'r':
+                r(cube_arr);
+            break;
+            case 'f':
+                f(cube_arr);
+            break;
+            case 'b':
+                b(cube_arr);
+            break;            
+        }
+    }
+    draw_cube(cube_arr);
+    return cube_arr;
+}
+
+function canvas_mouse(x,y) {
+    let canvas_x=x-document.getElementById('rubik').getBoundingClientRect().left;
+    let canvas_y=y-document.getElementById('rubik').getBoundingClientRect().top;
+    if ((canvas_x>175 && canvas_x<195) && (canvas_y>65 && canvas_y<85)) { draw_cube(u(cube_arr)); }
+    if ((canvas_x>92 && canvas_x<112) && (canvas_y>201 && canvas_y<221)) { draw_cube(l(cube_arr)); }
+    if ((canvas_x>258 && canvas_x<278) && (canvas_y>201 && canvas_y<221)) { draw_cube(f(cube_arr)); }
+    if ((canvas_x>548 && canvas_x<568) && (canvas_y>271 && canvas_y<291)) { draw_cube(d(cube_arr)); }
+    if ((canvas_x>467 && canvas_x<487) && (canvas_y>134 && canvas_y<154)) { draw_cube(r(cube_arr)); }
+    if ((canvas_x>629 && canvas_x<649) && (canvas_y>134 && canvas_y<154)) { draw_cube(b(cube_arr)); }
+}
+</script></head>
+<body onload="init_cube();"><div style="width: 100%; text-align: center; font-family: verdana,sans-serif; font-size: 12px; white-space: nowrap">
+<label>turns:<input id="turns" type="text" size="50"></label>
+<input type="button" value="submit turns" onclick=eval_turn(cube_arr);>
+<input type="button" value="reset cube" onclick=init_cube();><br/>
+<div style="padding: 10px;"><canvas onclick="canvas_mouse(event.clientX, event.clientY);" id="rubik" width="745" height="360"></canvas></div>
+</div></body></html>
