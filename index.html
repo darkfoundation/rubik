@@ -57,7 +57,9 @@ function draw_cube(cube_arr) {
     let up_arr=cube_arr[0]; let down_arr=cube_arr[1]; let left_arr=cube_arr[2];
     let right_arr=cube_arr[3]; let front_arr=cube_arr[4]; let back_arr=cube_arr[5];
     let c=document.getElementById("rubik"); let ctx=c.getContext("2d");
-    ctx.fillStyle="black"; ctx.fillRect(0, 0, 745, 360);
+    ctx.fillStyle="black";
+    ctx.beginPath(); ctx.moveTo(19, 74); ctx.lineTo(185, 7); ctx.lineTo(351, 74); ctx.lineTo(351, 282); ctx.lineTo(185, 349); ctx.lineTo(19, 282); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(392, 74); ctx.lineTo(558, 7); ctx.lineTo(724, 74); ctx.lineTo(724, 282); ctx.lineTo(558, 349); ctx.lineTo(392, 282); ctx.fill();
     draw_ud(ctx, up_arr, 25, 75, "U"); draw_lb(ctx, left_arr, 23, 78, "L"); draw_fr(ctx, front_arr, 187, 142, "F");
     draw_ud(ctx, down_arr, 398, 281, "D"); draw_fr(ctx, right_arr, 396, 75, "R"); draw_lb(ctx, back_arr, 560, 11, "B");
 }
