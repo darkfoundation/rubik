@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html lang="en"><head><title>Rubik's Cube</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<script>
+<style type="text/css">
+    #base {
+        width: 100%; text-align: center; font-family: verdana,sans-serif;
+        font-size: 12px; white-space: nowrap;
+    }
+
+    #help {
+        width: 700px; margin: auto; font-family: verdana,sans-serif;
+        font-size: 12px; border-radius: 8px; border: 2px solid darkgray;
+    }
+</style><script>
 let cube_arr=Array();
 function init_cube() {
     let up_arr=["white", "white", "white", "white", "white", "white", "white", "white", "white"];
@@ -57,7 +67,7 @@ function draw_cube(cube_arr) {
     let up_arr=cube_arr[0]; let down_arr=cube_arr[1]; let left_arr=cube_arr[2];
     let right_arr=cube_arr[3]; let front_arr=cube_arr[4]; let back_arr=cube_arr[5];
     let c=document.getElementById("rubik"); let ctx=c.getContext("2d");
-    ctx.fillStyle="black";
+    ctx.fillStyle="white"; ctx.fillRect(0, 0, 745, 360); ctx.fillStyle="black";
     ctx.beginPath(); ctx.moveTo(19, 74); ctx.lineTo(185, 7); ctx.lineTo(351, 74); ctx.lineTo(351, 282); ctx.lineTo(185, 349); ctx.lineTo(19, 282); ctx.fill();
     ctx.beginPath(); ctx.moveTo(392, 74); ctx.lineTo(558, 7); ctx.lineTo(724, 74); ctx.lineTo(724, 282); ctx.lineTo(558, 349); ctx.lineTo(392, 282); ctx.fill();
     draw_ud(ctx, up_arr, 25, 75, "U"); draw_lb(ctx, left_arr, 23, 78, "L"); draw_fr(ctx, front_arr, 187, 142, "F");
@@ -140,7 +150,8 @@ function eval_turn(cube_arr) {
     let turns=document.getElementById("turns").value.toLowerCase();
     if (turns==null) { draw_cube(cube_arr); return cube_arr; }
     let filt_turns=turns.match(/[udlrfb2\-]/g);
-    if (filt_turns==null) { draw_cube(cube_arr); return cube_arr; }
+    document.getElementById("turns").value=filt_turns.join('');
+    if (filt_turns===false) { draw_cube(cube_arr); return cube_arr; }
     let list=[]; let prev='';
     for (let i=0; i<filt_turns.length; i++) {
         let t=filt_turns[i];
@@ -184,13 +195,13 @@ function cube_enter(cube_arr, event) {
 }
 
 function canvas_mouse(cube_arr, event) {
-    let diff=15; let shiftKeyDown=event.shiftKey; let ctrlKeyDown=event.ctrlKey;
+    let diff=15; let shiftKeyDown=event.shiftKey; let altKeyDown=event.altKey;
     let x=event.clientX; let y=event.clientY;
     let canvas_x=x-document.getElementById('rubik').getBoundingClientRect().left;
     let canvas_y=y-document.getElementById('rubik').getBoundingClientRect().top;
     if ((Math.abs(canvas_x-185)<diff) && (Math.abs(canvas_y-75)<diff)) {
         document.getElementById("turns").value+="U";
-        if (ctrlKeyDown) { draw_cube(u(u(cube_arr)));
+        if (altKeyDown) { draw_cube(u(u(cube_arr)));
             document.getElementById("turns").value+="2"; }
         else if (shiftKeyDown) { draw_cube(u(u(u(cube_arr))));
             document.getElementById("turns").value+="-"; }
@@ -198,7 +209,7 @@ function canvas_mouse(cube_arr, event) {
     }
     if ((Math.abs(canvas_x-102)<diff) && (Math.abs(canvas_y-211)<diff)) {
         document.getElementById("turns").value+="L";
-        if (ctrlKeyDown) { draw_cube(l(l(cube_arr)));
+        if (altKeyDown) { draw_cube(l(l(cube_arr)));
             document.getElementById("turns").value+="2"; }
         else if (shiftKeyDown) { draw_cube(l(l(l(cube_arr))));
             document.getElementById("turns").value+="-"; }
@@ -206,7 +217,7 @@ function canvas_mouse(cube_arr, event) {
     }
     if ((Math.abs(canvas_x-268)<diff) && (Math.abs(canvas_y-211)<diff)) {
         document.getElementById("turns").value+="F";
-        if (ctrlKeyDown) { draw_cube(f(f(cube_arr)));
+        if (altKeyDown) { draw_cube(f(f(cube_arr)));
             document.getElementById("turns").value+="2"; }
         else if (shiftKeyDown) { draw_cube(f(f(f(cube_arr))));
             document.getElementById("turns").value+="-"; }
@@ -214,7 +225,7 @@ function canvas_mouse(cube_arr, event) {
     }
     if ((Math.abs(canvas_x-558)<diff) && (Math.abs(canvas_y-281)<diff)) {
         document.getElementById("turns").value+="D";
-        if (ctrlKeyDown) { draw_cube(d(d(cube_arr)));
+        if (altKeyDown) { draw_cube(d(d(cube_arr)));
             document.getElementById("turns").value+="2"; }
         else if (shiftKeyDown) { draw_cube(d(d(d(cube_arr))));
             document.getElementById("turns").value+="-"; }
@@ -222,7 +233,7 @@ function canvas_mouse(cube_arr, event) {
     }
     if ((Math.abs(canvas_x-477)<diff) && (Math.abs(canvas_y-144)<diff)) {
         document.getElementById("turns").value+="R";
-        if (ctrlKeyDown) { draw_cube(r(r(cube_arr)));
+        if (altKeyDown) { draw_cube(r(r(cube_arr)));
             document.getElementById("turns").value+="2"; }
         else if (shiftKeyDown) { draw_cube(r(r(r(cube_arr))));
             document.getElementById("turns").value+="-"; }
@@ -230,18 +241,34 @@ function canvas_mouse(cube_arr, event) {
     }
     if ((Math.abs(canvas_x-639)<diff) && (Math.abs(canvas_y-144)<diff)) {
         document.getElementById("turns").value+="B";
-        if (ctrlKeyDown) { draw_cube(b(b(cube_arr)));
+        if (altKeyDown) { draw_cube(b(b(cube_arr)));
             document.getElementById("turns").value+="2"; }
         else if (shiftKeyDown) { draw_cube(b(b(b(cube_arr))));
             document.getElementById("turns").value+="-"; }
         else { draw_cube(b(cube_arr)); } 
     }
 }
+
+function show_help() {
+    document.getElementById('help').hidden=false; document.getElementById('buttn1').hidden=true;
+}
+function hide_help() {
+    document.getElementById('help').hidden=true; document.getElementById('buttn1').hidden=false;
+}
+
 </script></head>
-<body onload="init_cube();"><div style="width: 100%; text-align: center; font-family: verdana,sans-serif; font-size: 12px; white-space: nowrap">
-<label>turns:<input id="turns" type="text" size="50" onkeypress="cube_enter(cube_arr, event)"></label>
-<input type="button" value="submit turns" onclick="eval_turn(cube_arr);">
-<input type="button" value="reset cube" onclick="init_cube();">
-<input type="button" value="clear turns" onclick="document.getElementById('turns').value='';"><br />
-<div style="padding: 10px;"><canvas onmousedown="canvas_mouse(cube_arr, event);" id="rubik" width="745" height="360"></canvas></div>
+<body onload="init_cube();"><div id="base">
+    <label>turns:<input id="turns" type="text" size="50" onkeypress="cube_enter(cube_arr, event)"></label>
+    <input type="button" value="submit turns" onclick="eval_turn(cube_arr);">
+    <input type="button" value="reset cube" onclick="init_cube();">
+    <input type="button" value="clear turns" onclick="document.getElementById('turns').value='';"><br />
+    <div style="padding: 10px;">
+        <canvas onmousedown="canvas_mouse(cube_arr, event);" id="rubik" width="745" height="360"></canvas>
+        <table id="help" hidden>
+            <tr><th>Help on Rubik's Cube</th></tr>
+            <tr><td style="text-align: justify;"></td></tr>
+            <tr><td style="text-align: center;">
+                <input type="button" id="buttn0" value="hide help" onclick="hide_help();">
+            </td></tr></table>
+    </div><input type="button" id="buttn1" value="show help" onclick="show_help();">
 </div></body></html>
