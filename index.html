@@ -256,7 +256,7 @@ function hide_help() {
 
 </script></head>
 <body onload="init_cube();"><div id="base">
-    <label>turns:<input id="turns" type="text" size="50" onkeypress="cube_enter(cube_arr, event)"></label>
+    <label>turns:<input id="turns" type="text" size="50" onkeypress="cube_enter(cube_arr, event)" style="border: 2px solid #000;"></label>
     <input type="button" value="submit turns" onclick="eval_turn(cube_arr);">
     <input type="button" value="reset cube" onclick="init_cube();">
     <input type="button" value="clear turns" onclick="document.getElementById('turns').value='';"><br />
