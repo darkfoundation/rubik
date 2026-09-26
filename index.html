@@ -22,12 +22,22 @@
         }
 
         #help {
-            width: 700px;
+            width: 750px;
             margin: auto;
             font-family: verdana, sans-serif;
             font-size: 12px;
             border-radius: 8px;
             border: 2px solid darkgray;
+        }
+
+        #help td {
+            text-align: justify;
+            word-wrap: break-all; 
+            overflow-wrap: break-word; 
+            max-width: 750px; 
+            white-space: normal;
+            line-height: 1.5;
+            padding: 0px 6px;
         }
     </style>
     <script>
@@ -313,7 +323,12 @@
                     <th>Help on Rubik's Cube</th>
                 </tr>
                 <tr>
-                    <td style="text-align: justify;"></td>
+                    <td>
+                        Clicking on a face turns it clockwise. Pressing SHIFT during the click turns the face
+                        counter-clockwise; pressing ALT or OPTION makes a half-turn. All turns get populated to the text
+                        box at the top of the page.<br>
+                        <u>Text Turn Notation</u>: A clockwise turn is denoted by the letter name of the face. A '-' (a dash or minus) means the turn is counter-clockwise, and a '2' denotes a half-turn.
+                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">
